@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Неделя информатики | Тест для первых и вторых курсов</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e8eef5 0%, #d9e2ec 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: #3a4a5a;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 30px auto;
+        }
+
+        .card {
+            background-color: rgba(240, 245, 250, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 50px 50px 40px 40px;
+            box-shadow: 0 20px 40px rgba(70, 100, 130, 0.18), 
+                        0 8px 20px rgba(100, 130, 160, 0.25),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.9);
+            padding: 40px 45px;
+            border: 2px solid rgba(180, 200, 220, 0.6);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #4a6b8a;
+            text-shadow: 3px 3px 0 #c5d5e5, 5px 5px 0 rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .title h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #5a7a9a;
+            background: rgba(210, 225, 240, 0.7);
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 60px;
+            margin-top: 10px;
+            border: 1px solid rgba(160, 185, 210, 0.5);
+        }
+
+        .student-info {
+            background: #f0f5fa;
+            padding: 30px 35px;
+            border-radius: 45px;
+            margin-bottom: 40px;
+            border: 2px dashed #a8c0d8;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px 35px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #4a6580;
+            font-size: 1.1rem;
+            padding-left: 15px;
+        }
+
+        .input-group input {
+            padding: 16px 22px;
+            border: 2px solid #b8cddc;
+            border-radius: 40px;
+            font-size: 1rem;
+            background: white;
+            transition: 0.25s ease;
+            outline: none;
+            color: #3a4a5a;
+            font-weight: 500;
+        }
+
+        .input-group input:focus {
+            border-color: #6a8fb0;
+            box-shadow: 0 0 0 5px #d4e2f0;
+        }
+
+        .input-group input:disabled {
+            background: #e8eef5;
+            color: #7a8a9a;
+            cursor: not-allowed;
+        }
+
+        .test-section {
+            margin-top: 20px;
+        }
+
+        .test-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .test-header h3 {
+            font-size: 2.2rem;
+            color: #4a6b8a;
+            font-weight: 600;
+            background: linear-gradient(to right, #d4e2f0, #c5d5e5);
+            padding: 10px 25px;
+            border-radius: 80px;
+            display: inline-block;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(70, 100, 130, 0.1);
+        }
+
+        .badge {
+            background: #a8c0d8;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #3a4a5a;
+            border: 3px solid white;
+            box-shadow: 0 3px 0 #7a95b0;
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 5px 15px 15px 5px;
+        }
+
+        .question-list::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .question-list::-webkit-scrollbar-track {
+            background: #d9e4ef;
+            border-radius: 20px;
+        }
+
+        .question-list::-webkit-scrollbar-thumb {
+            background: #8aa5c0;
+            border-radius: 20px;
+        }
+
+        .question-item {
+            background: rgba(235, 242, 249, 0.85);
+            border: 2px solid #b8cddc;
+            border-radius: 40px;
+            padding: 18px 28px;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 #9ab5cc;
+        }
+
+        .question-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 0 #7a95b0;
+        }
+
+        .question-item.completed {
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #3a5570;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .q-num {
+            background: #9ab5cc;
+            color: #2a3a4a;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin-right: 8px;
+            border: 2px solid white;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px 35px;
+            margin-left: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            color: #4a5a6a;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 22px 8px 18px;
+            border-radius: 40px;
+            border: 1px solid white;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .option:hover {
+            background: #d9e4ef;
+            border-color: #a8c0d8;
+        }
+
+        .option.correct {
+            background: #c8e6d6 !important;
+            border-color: #4a8a6a !important;
+            color: #2a5a4a !important;
+            font-weight: 600;
+        }
+
+        .option.incorrect {
+            background: #f0d9dc !important;
+            border-color: #a85a6a !important;
+            color: #6a2a3a !important;
+            text-decoration: line-through;
+        }
+
+        .option.not-answered {
+            opacity: 0.6;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #7a95b0;
+            border-radius: 50%;
+            outline: none;
+            transition: 0.1s;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        input[type="radio"]:checked {
+            background-color: #4a6b8a;
+            border-color: #4a6b8a;
+            box-shadow: inset 0 0 0 4px white;
+        }
+
+        input[type="radio"]:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .submit-area {
+            display: flex;
+            justify-content: center;
+            margin: 50px 0 20px;
+        }
+
+        .submit-btn {
+            background: #a8c0d8;
+            border: 4px solid white;
+            color: #3a4a5a;
+            font-size: 2rem;
+            font-weight: 800;
+            padding: 20px 65px;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 12px 0 #7a95b0;
+            transition: 0.1s ease;
+            text-transform: uppercase;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 8px 0 #7a95b0;
+            background: #9ab5cc;
+        }
+
+        .submit-btn:disabled {
+            background: #c8d5e2;
+            color: #7a8a9a;
+            box-shadow: 0 8px 0 #a8b8c8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(40, 60, 80, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .result-content {
+            background: linear-gradient(145deg, #f0f5fa, #e6edf5);
+            border-radius: 50px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            border: 4px solid #a8c0d8;
+            box-shadow: 0 20px 50px rgba(50, 80, 110, 0.3);
+        }
+
+        .result-content h3 {
+            font-size: 2rem;
+            color: #4a6b8a;
+            margin-bottom: 20px;
+        }
+
+        .result-content .score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #4a6b8a;
+            margin: 20px 0;
+        }
+
+        .result-content button {
+            background: #a8c0d8;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            color: #3a4a5a;
+            transition: background 0.2s;
+        }
+
+        .result-content button:hover {
+            background: #9ab5cc;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-correct { color: #4a8a6a; font-weight: 600; }
+        .legend-incorrect { color: #a85a6a; font-weight: 600; }
+        .legend-unanswered { color: #7a8a9a; }
+
+        .screenshot-notice {
+            background: #f0f5fa;
+            border: 2px solid #a8c0d8;
+            border-radius: 30px;
+            padding: 20px 30px;
+            margin-top: 30px;
+            text-align: center;
+            color: #4a5a6a;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .screenshot-notice strong {
+            color: #4a6b8a;
+            font-size: 1.2rem;
+        }
+
+        .already-taken {
+            text-align: center;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 30px;
+            border: 2px solid #a8c0d8;
+            margin: 20px 0;
+        }
+
+        .already-taken h4 {
+            color: #4a6b8a;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .already-taken p {
+            color: #5a6a7a;
+            margin: 8px 0;
+        }
+
+        .already-taken .prev-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #4a6b8a;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 700px) {
+            .card { padding: 25px 20px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .title h1 { font-size: 2.3rem; }
+            .submit-btn { font-size: 1.5rem; padding: 15px 40px; }
+            .legend { flex-direction: column; align-items: center; }
+            .screenshot-notice { font-size: 1rem; padding: 15px 20px; }
+            .test-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="title">
+                <h1>НЕДЕЛЯ ИНФОРМАТИКИ</h1>
+                <h2>Тест для первых и вторых курсов</h2>
+            </div>
+
+            <div class="student-info">
+                <div class="info-grid">
+                    <div class="input-group">
+                        <label>ФИО студента *</label>
+                        <input type="text" placeholder="Иванова Анастасия Сергеевна" id="fullName" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Номер группы</label>
+                        <input type="text" placeholder="ИС-11, ПИ-101" id="group">
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Учреждение (колледж/вуз)</label>
+                        <input type="text" placeholder="Московский политех, КМТИ и т.д." id="institution">
+                    </div>
+                </div>
+                <div id="previousResult" class="already-taken" style="display: none;">
+                    <h4>✅ Вы уже проходили этот тест</h4>
+                    <p>Ваши предыдущие результаты:</p>
+                    <div class="prev-score" id="prevScore">--%</div>
+                    <p id="prevDetails">Правильных ответов: -- из 42</p>
+                    <p style="font-size: 0.9rem; color: #6a7a8a; margin-top: 10px;">
+                        Повторное прохождение под тем же ФИО недоступно
+                    </p>
+                    <button onclick="showPreviousAnswers()" style="margin-top: 15px; background: #9ab5cc; border: none; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: 600; color: #3a4a5a;">
+                        Показать мои ответы
+                    </button>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <div class="test-header">
+                    <h3>Тест-викторина</h3>
+                    <span class="badge">42 вопроса</span>
+                </div>
+
+                <div class="question-list" id="questionList">
+                    <div style="text-align: center; padding: 40px; color: #4a6b8a;">Загрузка вопросов...</div>
+                </div>
+
+                <div class="legend">
+                    <span class="legend-item"><span class="legend-correct">Зелёный</span> Правильный ответ</span>
+                    <span class="legend-item"><span class="legend-incorrect">Красный</span> Неверный ответ</span>
+                    <span class="legend-item"><span class="legend-unanswered">Серый</span> Нет ответа</span>
+                </div>
+
+                <div class="submit-area">
+                    <button class="submit-btn" id="submitBtn" onclick="submitTest()">Показать результат</button>
+                </div>
+
+                <div class="screenshot-notice">
+                    <strong>Важно!</strong><br>
+                    После отображения результатов сделайте скриншот экрана,<br>
+                    чтобы сохранить свои результаты и не потерять их.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultModal" class="result-modal">
+        <div class="result-content">
+            <h3>Результаты теста</h3>
+            <div id="resultText"></div>
+            <button onclick="closeModal()">Закрыть и посмотреть ответы</button>
+        </div>
+    </div>
+
+    <script>
+        // Полный массив из 42 вопросов
+        const questionsData = [
+            { text: "Что означает аббревиатура 'CPU'?", options: ["Центральный процессор", "Видеокарта", "Блок питания", "Оперативная память"], correct: "Центральный процессор" },
+            { text: "Какой язык программирования используется для создания веб-страниц?", options: ["Python", "HTML", "Java", "C++"], correct: "HTML" },
+            { text: "Какая система счисления используется в компьютерах?", options: ["Десятичная", "Двоичная", "Шестнадцатеричная", "Восьмеричная"], correct: "Двоичная" },
+            { text: "Что такое компилятор?", options: ["Программа для отладки кода", "Программа, переводящая исходный код в машинный", "Среда разработки", "Система управления базами данных"], correct: "Программа, переводящая исходный код в машинный" },
+            { text: "Сколько бит в одном байте?", options: ["4", "8", "16", "32"], correct: "8" },
+            { text: "Что такое операционная система?", options: ["Антивирусная программа", "Программа для работы с текстом", "Комплекс программ, управляющих ресурсами компьютера", "Устройство ввода"], correct: "Комплекс программ, управляющих ресурсами компьютера" },
+            { text: "Какой тег HTML используется для создания гиперссылки?", options: ["<link>", "<a>", "<href>", "<url>"], correct: "<a>" },
+            { text: "Что такое алгоритм?", options: ["Последовательность действий для решения задачи", "Название языка программирования", "Устройство компьютера", "Тип данных"], correct: "Последовательность действий для решения задачи" },
+            { text: "Кто считается 'отцом' компьютера?", options: ["Билл Гейтс", "Стив Джобс", "Чарльз Бэббидж", "Алан Тьюринг"], correct: "Чарльз Бэббидж" },
+            { text: "Что такое RAM?", options: ["Постоянная память", "Оперативная память", "Жесткий диск", "Кэш-память"], correct: "Оперативная память" },
+            { text: "Какое расширение имеют исполняемые файлы в Windows?", options: [".txt", ".doc", ".exe", ".jpg"], correct: ".exe" },
+            { text: "Что такое IP-адрес?", options: ["Уникальный идентификатор устройства в сети", "Пароль для Wi-Fi", "Название браузера", "Тип антивируса"], correct: "Уникальный идентификатор устройства в сети" },
+            { text: "Какой язык программирования назван в честь комедийного шоу?", options: ["Java", "Python", "PHP", "Ruby"], correct: "Python" },
+            { text: "Что такое 'облачное хранилище'?", options: ["Физический жесткий диск", "Хранение данных на удаленных серверах", "USB-накопитель", "Оперативная память"], correct: "Хранение данных на удаленных серверах" },
+            { text: "Что такое SQL?", options: ["Язык программирования для создания игр", "Язык запросов к базам данных", "Операционная система", "Тип процессора"], correct: "Язык запросов к базам данных" },
+            { text: "Что такое брандмауэр (firewall)?", options: ["Антивирус", "Система защиты сети от несанкционированного доступа", "Программа для архивации", "Текстовый редактор"], correct: "Система защиты сети от несанкционированного доступа" },
+            { text: "Какая компания разработала операционную систему Windows?", options: ["Apple", "Microsoft", "Google", "IBM"], correct: "Microsoft" },
+            { text: "Что такое пиксель?", options: ["Минимальная единица изображения на экране", "Тип процессора", "Программа для рисования", "Формат видео"], correct: "Минимальная единица изображения на экране" },
+            { text: "Что такое CSS?", options: ["Язык программирования", "Язык стилей для веб-страниц", "База данных", "Серверный язык"], correct: "Язык стилей для веб-страниц" },
+            { text: "Что такое HTTP?", options: ["Протокол передачи гипертекста", "Язык разметки", "Тип сервера", "Программа для интернета"], correct: "Протокол передачи гипертекста" },
+            { text: "Что такое драйвер?", options: ["Программа для работы с устройствами", "Антивирус", "Текстовый файл", "Компьютерная игра"], correct: "Программа для работы с устройствами" },
+            { text: "Что такое VPN?", options: ["Антивирус", "Виртуальная частная сеть", "Операционная система", "Тип браузера"], correct: "Виртуальная частная сеть" },
+            { text: "Какая клавиша используется для копирования (Windows)?", options: ["Ctrl+X", "Ctrl+C", "Ctrl+V", "Ctrl+Z"], correct: "Ctrl+C" },
+            { text: "Что такое 'бит'?", options: ["Минимальная единица измерения информации", "Скорость интернета", "Размер файла", "Тип процессора"], correct: "Минимальная единица измерения информации" },
+            { text: "Что такое URL?", options: ["Адрес веб-страницы", "Язык программирования", "Тип сервера", "Протокол безопасности"], correct: "Адрес веб-страницы" },
+            { text: "Что такое 'бэкенд' (backend)?", options: ["Внешний вид сайта", "Серверная часть веб-приложения", "Дизайн интерфейса", "База данных"], correct: "Серверная часть веб-приложения" },
+            { text: "Что такое 'фронтенд' (frontend)?", options: ["Клиентская часть веб-приложения", "Серверная часть", "База данных", "Операционная система"], correct: "Клиентская часть веб-приложения" },
+            { text: "Что такое Git?", options: ["Язык программирования", "Система контроля версий", "База данных", "Текстовый редактор"], correct: "Система контроля версий" },
+            { text: "Что такое API?", options: ["Интерфейс программирования приложений", "Язык разметки", "Тип процессора", "Антивирус"], correct: "Интерфейс программирования приложений" },
+            { text: "Что такое SSD?", options: ["Твердотельный накопитель", "Оперативная память", "Жесткий диск", "Процессор"], correct: "Твердотельный накопитель" },
+            { text: "Что такое Wi-Fi?", options: ["Технология беспроводной связи", "Проводной интернет", "Операционная система", "Тип процессора"], correct: "Технология беспроводной связи" },
+            { text: "Что такое 'троян'?", options: ["Вид антивируса", "Вредоносная программа", "Браузер", "Операционная система"], correct: "Вредоносная программа" },
+            { text: "Что такое HTML?", options: ["Язык разметки веб-страниц", "Язык программирования", "База данных", "Сервер"], correct: "Язык разметки веб-страниц" },
+            { text: "Что такое JavaScript?", options: ["Язык программирования для веб-интерактивности", "Язык стилей", "База данных", "Серверный язык"], correct: "Язык программирования для веб-интерактивности" },
+            { text: "Что такое 'кэш'?", options: ["Временное хранилище данных", "Постоянная память", "Антивирус", "Драйвер"], correct: "Временное хранилище данных" },
+            { text: "Что такое домен?", options: ["Название сайта в интернете", "IP-адрес", "Сервер", "Браузер"], correct: "Название сайта в интернете" },
+            { text: "Что такое Python?", options: ["Язык программирования", "База данных", "Операционная система", "Текстовый редактор"], correct: "Язык программирования" },
+            { text: "Что такое Java?", options: ["Язык программирования", "База данных", "Браузер", "Антивирус"], correct: "Язык программирования" },
+            { text: "Что такое 'браузер'?", options: ["Программа для просмотра веб-страниц", "Операционная система", "Текстовый редактор", "Антивирус"], correct: "Программа для просмотра веб-страниц" },
+            { text: "Что такое 'сервер'?", options: ["Компьютер, предоставляющий ресурсы клиентам", "Пользовательский компьютер", "Принтер", "Монитор"], correct: "Компьютер, предоставляющий ресурсы клиентам" },
+            { text: "Что такое 'хостинг'?", options: ["Услуга размещения сайта на сервере", "Доменное имя", "IP-адрес", "Браузер"], correct: "Услуга размещения сайта на сервере" },
+            { text: "Что такое 'дебаггинг' (debugging)?", options: ["Поиск и исправление ошибок в коде", "Написание кода", "Тестирование дизайна", "Создание базы данных"], correct: "Поиск и исправление ошибок в коде" }
+        ];
+
+        // Ключ для localStorage
+        const STORAGE_PREFIX = 'informatika_test_';
+
+        // Генерация всех 42 вопросов при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionList = document.getElementById('questionList');
+            questionList.innerHTML = '';
+            
+            questionsData.forEach((q, index) => {
+                const questionNumber = index + 1;
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+                questionDiv.id = `question-${questionNumber}`;
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'q-title';
+                titleDiv.innerHTML = `<span class="q-num">${questionNumber}</span> ${q.text}`;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                q.options.forEach((option) => {
+                    const label = document.createElement('label');
+                    label.className = 'option';
+                    label.dataset.value = option;
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `q${questionNumber}`;
+                    radio.value = option;
+                    radio.id = `q${questionNumber}-${option.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
+                    label.setAttribute('for', radio.id);
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(' ' + option));
+                    optionsDiv.appendChild(label);
+                });
+                
+                questionDiv.appendChild(titleDiv);
+                questionDiv.appendChild(optionsDiv);
+                questionList.appendChild(questionDiv);
+            });
+
+            // Проверяем, не проходил ли студент тест ранее
+            document.getElementById('fullName').addEventListener('blur', checkPreviousAttempt);
+            document.getElementById('fullName').addEventListener('change', checkPreviousAttempt);
+        });
+
+        // Проверка предыдущих попыток по ФИО
+        function checkPreviousAttempt() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const prevResultDiv = document.getElementById('previousResult');
+            
+            if (!fullName) {
+                prevResultDiv.style.display = 'none';
+                enableTestInputs(true);
+                return;
+            }
+            
+            const savedData = localStorage.getItem(STORAGE_PREFIX + fullName.toLowerCase());
+            
+            if (savedData) {
+                const result = JSON.parse(savedData);
+                prevResultDiv.style.display = 'block';
+                document.getElementById('prevScore').textContent = result.percentage + '%';
+                document.getElementById('prevDetails').textContent = `Правильных ответов: ${result.correctCount} из 42`;
+                
+                // Блокируем ввод и вопросы
+                enableTestInputs(false);
+                disableQuestions();
+            } else {
+                prevResultDiv.style.display = 'none';
+                enableTestInputs(true);
+                enableQuestions();
+            }
+        }
+
+        // Включение/отключение полей ввода
+        function enableTestInputs(enabled) {
+            ['fullName', 'group', 'institution'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.disabled = !enabled;
+                    if (id === 'fullName' && !enabled) {
+                        input.style.cursor = 'not-allowed';
+                    }
+                }
+            });
+        }
+
+        // Отключение вопросов
+        function disableQuestions() {
+            document.querySelectorAll('.question-item').forEach(item => {
+                item.classList.add('completed');
+                item.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.disabled = true;
+                });
+            });
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = 'Тест уже пройден';
+        }
+
+        // Включение вопросов
+        function enableQuestions() {
+            document.querySelectorAll('.question-item').forEach(item => {
+                item.classList.remove('completed');
+                item.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.disabled = false;
+                });
+            });
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').textContent = 'Показать результат';
+        }
+
+        // Подсчёт результатов
+        function calculateResults() {
+            let correctCount = 0;
+            let answeredCount = 0;
+            
+            for (let i = 1; i <= 42; i++) {
+                const radios = document.getElementsByName(`q${i}`);
+                let selectedValue = null;
+                for (let r of radios) {
+                    if (r.checked) {
+                        selectedValue = r.value;
+                        answeredCount++;
+                        break;
+                    }
+                }
+                
+                if (selectedValue && selectedValue === questionsData[i-1].correct) {
+                    correctCount++;
+                }
+            }
+            
+            const percentage = Math.round((correctCount / 42) * 100);
+            return { correctCount, answeredCount, percentage };
+        }
+
+        // Сохранение результатов в localStorage
+        function saveResults(fullName, results, answers) {
+            const data = {
+                fullName: fullName,
+                timestamp: new Date().toISOString(),
+                correctCount: results.correctCount,
+                answeredCount: results.answeredCount,
+                percentage: results.percentage,
+                answers: answers
+            };
+            localStorage.setItem(STORAGE_PREFIX + fullName.toLowerCase(), JSON.stringify(data));
+        }
+
+        // Получение ответов пользователя
+        function getUserAnswers() {
+            const answers = {};
+            for (let i = 1; i <= 42; i++) {
+                const radios = document.getElementsByName(`q${i}`);
+                for (let r of radios) {
+                    if (r.checked) {
+                        answers[i] = r.value;
+                        break;
+                    }
+                }
+            }
+            return answers;
+        }
+
+        // Отображение правильных ответов на странице
+        function showCorrectAnswers(userAnswers = null) {
+            questionsData.forEach((q, index) => {
+                const questionNumber = index + 1;
+                const questionItem = document.getElementById(`question-${questionNumber}`);
+                if (!questionItem) return;
+                
+                const options = questionItem.querySelectorAll('.option');
+                const radios = questionItem.querySelectorAll('input[type="radio"]');
+                
+                const userSelected = userAnswers ? userAnswers[questionNumber] : null;
+                
+                radios.forEach(radio => {
+                    radio.disabled = true;
+                });
+                
+                options.forEach(option => {
+                    const value = option.dataset.value;
+                    if (value === q.correct) {
+                        option.classList.add('correct');
+                    } else if (value === userSelected && userSelected !== q.correct) {
+                        option.classList.add('incorrect');
+                    } else {
+                        option.classList.add('not-answered');
+                    }
+                    option.style.pointerEvents = 'none';
+                });
+            });
+            
+            // Отключаем поля ввода
+            ['fullName', 'group', 'institution'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.disabled = true;
+            });
+            
+            // Отключаем кнопку
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Тест завершён';
+            }
+        }
+
+        // Показать предыдущие ответы студента
+        function showPreviousAnswers() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const savedData = localStorage.getItem(STORAGE_PREFIX + fullName.toLowerCase());
+            
+            if (!savedData) return;
+            
+            const result = JSON.parse(savedData);
+            
+            // Восстанавливаем выбранные ответы
+            if (result.answers) {
+                Object.entries(result.answers).forEach(([qNum, answer]) => {
+                    const radios = document.getElementsByName(`q${qNum}`);
+                    radios.forEach(radio => {
+                        if (radio.value === answer) {
+                            radio.checked = true;
+                        }
+                    });
+                });
+            }
+            
+            // Показываем правильные ответы с подсветкой
+            showCorrectAnswers(result.answers);
+            
+            // Прокрутка к вопросам
+            document.getElementById('questionList').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Отправка теста
+        function submitTest() {
+            const fullName = document.getElementById('fullName').value.trim();
+            
+            if (!fullName) {
+                alert('Пожалуйста, введите ваше ФИО');
+                document.getElementById('fullName').focus();
+                return;
+            }
+            
+            // Проверка на повторное прохождение
+            const savedData = localStorage.getItem(STORAGE_PREFIX + fullName.toLowerCase());
+            if (savedData) {
+                alert('Вы уже проходили этот тест под данным ФИО. Повторное прохождение недоступно.');
+                checkPreviousAttempt();
+                return;
+            }
+            
+            const { correctCount, answeredCount, percentage } = calculateResults();
+            const userAnswers = getUserAnswers();
+            
+            // Сохраняем результаты
+            saveResults(fullName, { correctCount, answeredCount, percentage }, userAnswers);
+            
+            // Отображаем модальное окно с результатами
+            const group = document.getElementById('group').value || 'не указано';
+            const institution = document.getElementById('institution').value || 'не указано';
+            
+            let grade = '';
+            if (percentage >= 90) grade = 'Отлично';
+            else if (percentage >= 75) grade = 'Хорошо';
+            else if (percentage >= 60) grade = 'Удовлетворительно';
+            else grade = 'Нужно подтянуть знания';
+            
+            const resultHTML = `
+                <p><strong>${fullName}</strong></p>
+                <p>Группа: ${group}</p>
+                <p>Учреждение: ${institution}</p>
+                <div class="score">${percentage}%</div>
+                <p>Правильных ответов: ${correctCount} из 42</p>
+                <p>Отвечено вопросов: ${answeredCount} из 42</p>
+                <p style="font-size: 1.2rem; margin-top: 15px; color: #4a6b8a;">${grade}</p>
+                <p style="font-size: 0.9rem; color: #6a7a8a; margin-top: 10px;">
+                    Нажмите «Закрыть», чтобы увидеть правильные ответы ниже
+                </p>
+            `;
+            
+            document.getElementById('resultText').innerHTML = resultHTML;
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+            showCorrectAnswers(getUserAnswers());
+            document.getElementById('questionList').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Блокировка правого клика и копирования (опционально, для защиты)
+        document.addEventListener('contextmenu', function(e) {
+            if (document.getElementById('resultModal').style.display === 'flex') {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
