@@ -149,7 +149,6 @@
             box-shadow: 0 3px 0 #7a95b0;
         }
 
-        /* Исправлено: плашка с предупреждением теперь перед тестом */
         .screenshot-notice {
             background: #fff3cd;
             border: 2px solid #ffc107;
@@ -234,28 +233,32 @@
             font-weight: 800;
             margin-right: 8px;
             border: 2px solid white;
+            flex-shrink: 0;
         }
 
         .options {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px 35px;
+            flex-direction: column;
+            gap: 12px;
             margin-left: 10px;
         }
 
         .option {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            align-items: flex-start;
+            gap: 12px;
             cursor: pointer;
             font-size: 1.05rem;
             color: #4a5a6a;
             font-weight: 500;
             background: rgba(255, 255, 255, 0.7);
-            padding: 8px 22px 8px 18px;
+            padding: 12px 18px;
             border-radius: 16px;
             border: 1px solid white;
             transition: background 0.15s, border-color 0.15s;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .option:hover {
@@ -263,22 +266,10 @@
             border-color: #a8c0d8;
         }
 
-        .option.correct {
-            background: #c8e6d6 !important;
-            border-color: #4a8a6a !important;
-            color: #2a5a4a !important;
+        .option.selected {
+            background: #e3f2fd !important;
+            border-color: #6a8fb0 !important;
             font-weight: 600;
-        }
-
-        .option.incorrect {
-            background: #f0d9dc !important;
-            border-color: #a85a6a !important;
-            color: #6a2a3a !important;
-            text-decoration: line-through;
-        }
-
-        .option.not-answered {
-            opacity: 0.6;
         }
 
         input[type="radio"] {
@@ -292,6 +283,8 @@
             transition: 0.1s;
             background-color: white;
             cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
         input[type="radio"]:checked {
@@ -396,25 +389,6 @@
             background: #9ab5cc;
         }
 
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 15px 0;
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .legend-correct { color: #4a8a6a; font-weight: 600; }
-        .legend-incorrect { color: #a85a6a; font-weight: 600; }
-        .legend-unanswered { color: #7a8a9a; }
-
         .already-taken {
             text-align: center;
             padding: 30px;
@@ -451,7 +425,6 @@
             margin: 15px 0;
         }
 
-        /* Кнопка просмотра ответов для прошедших тест */
         .view-answers-btn {
             margin-top: 15px;
             background: #c8d5e2;
@@ -469,15 +442,54 @@
             color: #8a9aab;
         }
 
+        /* Исправлено: адаптивность для мобильных устройств */
         @media (max-width: 700px) {
-            .card { padding: 25px 20px; }
+            .card { padding: 25px 20px; border-radius: 30px 30px 20px 20px; }
             .info-grid { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
             .title h1 { font-size: 2.3rem; }
+            .title h2 { font-size: 1.4rem; padding: 8px 20px; }
             .submit-btn { font-size: 1.5rem; padding: 15px 40px; }
-            .legend { flex-direction: column; align-items: center; }
             .screenshot-notice { font-size: 0.95rem; padding: 14px 18px; }
             .test-header { flex-direction: column; align-items: flex-start; }
+            .test-header h3 { font-size: 1.8rem; padding: 8px 20px; }
+            .badge { font-size: 1.2rem; padding: 10px 24px; }
+            
+            /* Исправлено: варианты ответов на мобильных */
+            .option {
+                font-size: 1rem;
+                padding: 14px 16px;
+                gap: 10px;
+            }
+            input[type="radio"] {
+                width: 20px;
+                height: 20px;
+            }
+            .q-title {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .q-num {
+                width: 28px;
+                height: 28px;
+                font-size: 0.95rem;
+            }
+            .question-item {
+                padding: 16px 20px;
+                border-radius: 24px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card { padding: 20px 15px; }
+            .option {
+                font-size: 0.95rem;
+                padding: 12px 14px;
+            }
+            .input-group input {
+                padding: 14px 18px;
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
@@ -506,7 +518,7 @@
                 </div>
                 
                 <div id="previousResult" class="already-taken" style="display: none;">
-                    <h4>✅ Вы уже проходили этот тест</h4>
+                    <h4>Вы уже проходили этот тест</h4>
                     <div class="user-info" id="prevUserInfo">
                         <span id="prevFullName"></span><br>
                         <span style="font-weight: 400; font-size: 0.95rem;">Группа: <span id="prevGroup"></span></span>
@@ -517,9 +529,8 @@
                     <p style="font-size: 0.9rem; color: #6a7a8a; margin-top: 10px;">
                         Повторное прохождение под тем же ФИО недоступно
                     </p>
-                    <!-- Исправлено: кнопка теперь неактивна и показывает подсказку -->
                     <button class="view-answers-btn disabled-hint" disabled>
-                        🔒 Ответы скрыты для защиты теста
+                        Просмотр ответов недоступен
                     </button>
                 </div>
             </div>
@@ -530,21 +541,14 @@
                     <span class="badge">42 вопроса</span>
                 </div>
 
-                <!-- Исправлено: плашка с предупреждением перемещена ПЕРЕД тестом -->
                 <div class="screenshot-notice">
-                    <strong>⚠️ Важно!</strong>
+                    <strong>Важно!</strong>
                     После отображения результатов сделайте скриншот экрана,<br>
                     чтобы сохранить свои результаты и не потерять их.
                 </div>
 
                 <div class="question-list" id="questionList">
                     <div style="text-align: center; padding: 40px; color: #4a6b8a;">Загрузка вопросов...</div>
-                </div>
-
-                <div class="legend">
-                    <span class="legend-item"><span class="legend-correct">Зелёный</span> Правильный ответ</span>
-                    <span class="legend-item"><span class="legend-incorrect">Красный</span> Неверный ответ</span>
-                    <span class="legend-item"><span class="legend-unanswered">Серый</span> Нет ответа</span>
                 </div>
 
                 <div class="submit-area">
@@ -558,12 +562,11 @@
         <div class="result-content">
             <h3>Результаты теста</h3>
             <div id="resultText"></div>
-            <button onclick="closeModal()">Закрыть и посмотреть ответы</button>
+            <button onclick="closeModal()">Закрыть и посмотреть мои ответы</button>
         </div>
     </div>
 
     <script>
-        // Полный массив из 42 вопросов
         const questionsData = [
             { text: "Что означает аббревиатура 'CPU'?", options: ["Центральный процессор", "Видеокарта", "Блок питания", "Оперативная память"], correct: "Центральный процессор" },
             { text: "Какой язык программирования используется для создания веб-страниц?", options: ["Python", "HTML", "Java", "C++"], correct: "HTML" },
@@ -609,10 +612,8 @@
             { text: "Что такое 'дебаггинг' (debugging)?", options: ["Поиск и исправление ошибок в коде", "Написание кода", "Тестирование дизайна", "Создание базы данных"], correct: "Поиск и исправление ошибок в коде" }
         ];
 
-        // Ключ для localStorage
         const STORAGE_PREFIX = 'informatika_test_';
 
-        // Функция перемешивания массива (алгоритм Фишера-Йетса)
         function shuffleArray(array) {
             const shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -622,7 +623,6 @@
             return shuffled;
         }
 
-        // Генерация всех 42 вопросов при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             const questionList = document.getElementById('questionList');
             questionList.innerHTML = '';
@@ -640,7 +640,6 @@
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
                 
-                // Исправлено: перемешиваем варианты ответов для каждого вопроса
                 const shuffledOptions = shuffleArray(q.options);
                 
                 shuffledOptions.forEach((option) => {
@@ -654,7 +653,9 @@
                     radio.id = `q${questionNumber}-${option.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
                     label.setAttribute('for', radio.id);
                     label.appendChild(radio);
-                    label.appendChild(document.createTextNode(' ' + option));
+                    const optionText = document.createElement('span');
+                    optionText.textContent = ' ' + option;
+                    label.appendChild(optionText);
                     optionsDiv.appendChild(label);
                 });
                 
@@ -663,12 +664,10 @@
                 questionList.appendChild(questionDiv);
             });
 
-            // Проверяем, не проходил ли студент тест ранее
             document.getElementById('fullName').addEventListener('blur', checkPreviousAttempt);
             document.getElementById('fullName').addEventListener('change', checkPreviousAttempt);
         });
 
-        // Проверка предыдущих попыток по ФИО
         function checkPreviousAttempt() {
             const fullName = document.getElementById('fullName').value.trim();
             const group = document.getElementById('group').value.trim();
@@ -686,14 +685,12 @@
                 const result = JSON.parse(savedData);
                 prevResultDiv.style.display = 'block';
                 
-                // Отображаем ФИО и группу из сохранённых данных
                 document.getElementById('prevFullName').textContent = result.fullName || fullName;
                 document.getElementById('prevGroup').textContent = result.group || group || 'не указана';
                 
                 document.getElementById('prevScore').textContent = result.percentage + '%';
                 document.getElementById('prevDetails').textContent = `Правильных ответов: ${result.correctCount} из 42`;
                 
-                // Блокируем ввод и вопросы
                 enableTestInputs(false);
                 disableQuestions();
             } else {
@@ -703,7 +700,6 @@
             }
         }
 
-        // Включение/отключение полей ввода
         function enableTestInputs(enabled) {
             ['fullName', 'group', 'institution'].forEach(id => {
                 const input = document.getElementById(id);
@@ -716,7 +712,6 @@
             });
         }
 
-        // Отключение вопросов
         function disableQuestions() {
             document.querySelectorAll('.question-item').forEach(item => {
                 item.classList.add('completed');
@@ -728,7 +723,6 @@
             document.getElementById('submitBtn').textContent = 'Тест уже пройден';
         }
 
-        // Включение вопросов
         function enableQuestions() {
             document.querySelectorAll('.question-item').forEach(item => {
                 item.classList.remove('completed');
@@ -740,7 +734,6 @@
             document.getElementById('submitBtn').textContent = 'Показать результат';
         }
 
-        // Подсчёт результатов
         function calculateResults() {
             let correctCount = 0;
             let answeredCount = 0;
@@ -765,7 +758,6 @@
             return { correctCount, answeredCount, percentage };
         }
 
-        // Сохранение результатов в localStorage
         function saveResults(fullName, results, answers, group, institution) {
             const data = {
                 fullName: fullName,
@@ -780,7 +772,6 @@
             localStorage.setItem(STORAGE_PREFIX + fullName.toLowerCase(), JSON.stringify(data));
         }
 
-        // Получение ответов пользователя
         function getUserAnswers() {
             const answers = {};
             for (let i = 1; i <= 42; i++) {
@@ -795,8 +786,8 @@
             return answers;
         }
 
-        // Отображение правильных ответов на странице
-        function showCorrectAnswers(userAnswers = null) {
+        // Исправлено: просто показывает выбранные ответы без подсветки правильных/неправильных
+        function showUserAnswers(userAnswers) {
             questionsData.forEach((q, index) => {
                 const questionNumber = index + 1;
                 const questionItem = document.getElementById(`question-${questionNumber}`);
@@ -813,24 +804,19 @@
                 
                 options.forEach(option => {
                     const value = option.dataset.value;
-                    if (value === q.correct) {
-                        option.classList.add('correct');
-                    } else if (value === userSelected && userSelected !== q.correct) {
-                        option.classList.add('incorrect');
-                    } else {
-                        option.classList.add('not-answered');
+                    // Просто выделяем выбранный пользователем ответ
+                    if (value === userSelected) {
+                        option.classList.add('selected');
                     }
                     option.style.pointerEvents = 'none';
                 });
             });
             
-            // Отключаем поля ввода
             ['fullName', 'group', 'institution'].forEach(id => {
                 const input = document.getElementById(id);
                 if (input) input.disabled = true;
             });
             
-            // Отключаем кнопку
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -838,12 +824,10 @@
             }
         }
 
-        // Исправлено: функция больше не показывает ответы для прошедших тест
         function showPreviousAnswers() {
-            alert('🔒 Просмотр ответов после завершения теста недоступен для защиты честности тестирования.');
+            alert('Просмотр ответов после завершения теста недоступен для защиты честности тестирования.');
         }
 
-        // Отправка теста
         function submitTest() {
             const fullName = document.getElementById('fullName').value.trim();
             const group = document.getElementById('group').value.trim();
@@ -855,7 +839,6 @@
                 return;
             }
             
-            // Проверка на повторное прохождение
             const savedData = localStorage.getItem(STORAGE_PREFIX + fullName.toLowerCase());
             if (savedData) {
                 alert('Вы уже проходили этот тест под данным ФИО. Повторное прохождение недоступно.');
@@ -866,10 +849,8 @@
             const { correctCount, answeredCount, percentage } = calculateResults();
             const userAnswers = getUserAnswers();
             
-            // Сохраняем результаты (включая группу)
             saveResults(fullName, { correctCount, answeredCount, percentage }, userAnswers, group, institution);
             
-            // Отображаем модальное окно с результатами
             const displayGroup = group || 'не указана';
             const displayInstitution = institution || 'не указано';
             
@@ -888,7 +869,7 @@
                 <p>Отвечено вопросов: ${answeredCount} из 42</p>
                 <p style="font-size: 1.2rem; margin-top: 15px; color: #4a6b8a;">${grade}</p>
                 <p style="font-size: 0.9rem; color: #6a7a8a; margin-top: 10px;">
-                    Нажмите «Закрыть», чтобы увидеть правильные ответы ниже
+                    Нажмите «Закрыть», чтобы увидеть ваши выбранные ответы ниже
                 </p>
             `;
             
@@ -898,11 +879,10 @@
 
         function closeModal() {
             document.getElementById('resultModal').style.display = 'none';
-            showCorrectAnswers(getUserAnswers());
+            showUserAnswers(getUserAnswers());
             document.getElementById('questionList').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Закрытие модального окна при клике вне его
         window.onclick = function(event) {
             const modal = document.getElementById('resultModal');
             if (event.target === modal) {
@@ -910,7 +890,6 @@
             }
         }
 
-        // Блокировка правого клика и копирования (опционально, для защиты)
         document.addEventListener('contextmenu', function(e) {
             if (document.getElementById('resultModal').style.display === 'flex') {
                 e.preventDefault();
