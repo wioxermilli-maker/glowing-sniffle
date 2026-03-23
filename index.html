@@ -149,6 +149,27 @@
             box-shadow: 0 3px 0 #7a95b0;
         }
 
+        /* Исправлено: плашка с предупреждением теперь перед тестом */
+        .screenshot-notice {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 20px;
+            padding: 18px 25px;
+            margin: 0 0 25px 0;
+            text-align: center;
+            color: #664d03;
+            font-weight: 600;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 0 #e0a800;
+        }
+
+        .screenshot-notice strong {
+            color: #996d03;
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
         .question-list {
             display: flex;
             flex-direction: column;
@@ -232,7 +253,6 @@
             font-weight: 500;
             background: rgba(255, 255, 255, 0.7);
             padding: 8px 22px 8px 18px;
-            /* Исправлено: уменьшен border-radius для менее овальной формы */
             border-radius: 16px;
             border: 1px solid white;
             transition: background 0.15s, border-color 0.15s;
@@ -288,7 +308,7 @@
         .submit-area {
             display: flex;
             justify-content: center;
-            margin: 50px 0 20px;
+            margin: 40px 0 15px;
         }
 
         .submit-btn {
@@ -395,24 +415,6 @@
         .legend-incorrect { color: #a85a6a; font-weight: 600; }
         .legend-unanswered { color: #7a8a9a; }
 
-        .screenshot-notice {
-            background: #f0f5fa;
-            border: 2px solid #a8c0d8;
-            border-radius: 30px;
-            padding: 20px 30px;
-            /* Исправлено: поднят выше, уменьшен верхний отступ */
-            margin: 25px 0 0;
-            text-align: center;
-            color: #4a5a6a;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .screenshot-notice strong {
-            color: #4a6b8a;
-            font-size: 1.2rem;
-        }
-
         .already-taken {
             text-align: center;
             padding: 30px;
@@ -433,7 +435,6 @@
             margin: 8px 0;
         }
 
-        /* Исправлено: стили для отображения ФИО и группы */
         .already-taken .user-info {
             background: #e8eef5;
             padding: 12px 20px;
@@ -450,6 +451,24 @@
             margin: 15px 0;
         }
 
+        /* Кнопка просмотра ответов для прошедших тест */
+        .view-answers-btn {
+            margin-top: 15px;
+            background: #c8d5e2;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: not-allowed;
+            font-weight: 600;
+            color: #7a8a9a;
+            opacity: 0.7;
+        }
+
+        .view-answers-btn.disabled-hint {
+            font-size: 0.9rem;
+            color: #8a9aab;
+        }
+
         @media (max-width: 700px) {
             .card { padding: 25px 20px; }
             .info-grid { grid-template-columns: 1fr; }
@@ -457,7 +476,7 @@
             .title h1 { font-size: 2.3rem; }
             .submit-btn { font-size: 1.5rem; padding: 15px 40px; }
             .legend { flex-direction: column; align-items: center; }
-            .screenshot-notice { font-size: 1rem; padding: 15px 20px; }
+            .screenshot-notice { font-size: 0.95rem; padding: 14px 18px; }
             .test-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
@@ -485,7 +504,7 @@
                         <input type="text" placeholder="Московский политех, КМТИ и т.д." id="institution">
                     </div>
                 </div>
-                <!-- Исправлено: добавлены элементы для отображения ФИО и группы -->
+                
                 <div id="previousResult" class="already-taken" style="display: none;">
                     <h4>✅ Вы уже проходили этот тест</h4>
                     <div class="user-info" id="prevUserInfo">
@@ -498,8 +517,9 @@
                     <p style="font-size: 0.9rem; color: #6a7a8a; margin-top: 10px;">
                         Повторное прохождение под тем же ФИО недоступно
                     </p>
-                    <button onclick="showPreviousAnswers()" style="margin-top: 15px; background: #9ab5cc; border: none; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: 600; color: #3a4a5a;">
-                        Показать мои ответы
+                    <!-- Исправлено: кнопка теперь неактивна и показывает подсказку -->
+                    <button class="view-answers-btn disabled-hint" disabled>
+                        🔒 Ответы скрыты для защиты теста
                     </button>
                 </div>
             </div>
@@ -508,6 +528,13 @@
                 <div class="test-header">
                     <h3>Тест-викторина</h3>
                     <span class="badge">42 вопроса</span>
+                </div>
+
+                <!-- Исправлено: плашка с предупреждением перемещена ПЕРЕД тестом -->
+                <div class="screenshot-notice">
+                    <strong>⚠️ Важно!</strong>
+                    После отображения результатов сделайте скриншот экрана,<br>
+                    чтобы сохранить свои результаты и не потерять их.
                 </div>
 
                 <div class="question-list" id="questionList">
@@ -522,13 +549,6 @@
 
                 <div class="submit-area">
                     <button class="submit-btn" id="submitBtn" onclick="submitTest()">Показать результат</button>
-                </div>
-
-                <!-- Исправлено: плашка поднята выше, уменьшены отступы -->
-                <div class="screenshot-notice">
-                    <strong>Важно!</strong><br>
-                    После отображения результатов сделайте скриншот экрана,<br>
-                    чтобы сохранить свои результаты и не потерять их.
                 </div>
             </div>
         </div>
@@ -592,6 +612,16 @@
         // Ключ для localStorage
         const STORAGE_PREFIX = 'informatika_test_';
 
+        // Функция перемешивания массива (алгоритм Фишера-Йетса)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
         // Генерация всех 42 вопросов при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             const questionList = document.getElementById('questionList');
@@ -610,7 +640,10 @@
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
                 
-                q.options.forEach((option) => {
+                // Исправлено: перемешиваем варианты ответов для каждого вопроса
+                const shuffledOptions = shuffleArray(q.options);
+                
+                shuffledOptions.forEach((option) => {
                     const label = document.createElement('label');
                     label.className = 'option';
                     label.dataset.value = option;
@@ -653,7 +686,7 @@
                 const result = JSON.parse(savedData);
                 prevResultDiv.style.display = 'block';
                 
-                // Исправлено: отображаем ФИО и группу из сохранённых данных
+                // Отображаем ФИО и группу из сохранённых данных
                 document.getElementById('prevFullName').textContent = result.fullName || fullName;
                 document.getElementById('prevGroup').textContent = result.group || group || 'не указана';
                 
@@ -805,32 +838,9 @@
             }
         }
 
-        // Показать предыдущие ответы студента
+        // Исправлено: функция больше не показывает ответы для прошедших тест
         function showPreviousAnswers() {
-            const fullName = document.getElementById('fullName').value.trim();
-            const savedData = localStorage.getItem(STORAGE_PREFIX + fullName.toLowerCase());
-            
-            if (!savedData) return;
-            
-            const result = JSON.parse(savedData);
-            
-            // Восстанавливаем выбранные ответы
-            if (result.answers) {
-                Object.entries(result.answers).forEach(([qNum, answer]) => {
-                    const radios = document.getElementsByName(`q${qNum}`);
-                    radios.forEach(radio => {
-                        if (radio.value === answer) {
-                            radio.checked = true;
-                        }
-                    });
-                });
-            }
-            
-            // Показываем правильные ответы с подсветкой
-            showCorrectAnswers(result.answers);
-            
-            // Прокрутка к вопросам
-            document.getElementById('questionList').scrollIntoView({ behavior: 'smooth' });
+            alert('🔒 Просмотр ответов после завершения теста недоступен для защиты честности тестирования.');
         }
 
         // Отправка теста
