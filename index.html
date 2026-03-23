@@ -232,7 +232,8 @@
             font-weight: 500;
             background: rgba(255, 255, 255, 0.7);
             padding: 8px 22px 8px 18px;
-            border-radius: 40px;
+            /* Исправлено: уменьшен border-radius для менее овальной формы */
+            border-radius: 16px;
             border: 1px solid white;
             transition: background 0.15s, border-color 0.15s;
         }
@@ -399,7 +400,8 @@
             border: 2px solid #a8c0d8;
             border-radius: 30px;
             padding: 20px 30px;
-            margin-top: 30px;
+            /* Исправлено: поднят выше, уменьшен верхний отступ */
+            margin: 25px 0 0;
             text-align: center;
             color: #4a5a6a;
             font-weight: 600;
@@ -429,6 +431,16 @@
         .already-taken p {
             color: #5a6a7a;
             margin: 8px 0;
+        }
+
+        /* Исправлено: стили для отображения ФИО и группы */
+        .already-taken .user-info {
+            background: #e8eef5;
+            padding: 12px 20px;
+            border-radius: 20px;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #3a4a5a;
         }
 
         .already-taken .prev-score {
@@ -473,8 +485,13 @@
                         <input type="text" placeholder="Московский политех, КМТИ и т.д." id="institution">
                     </div>
                 </div>
+                <!-- Исправлено: добавлены элементы для отображения ФИО и группы -->
                 <div id="previousResult" class="already-taken" style="display: none;">
                     <h4>✅ Вы уже проходили этот тест</h4>
+                    <div class="user-info" id="prevUserInfo">
+                        <span id="prevFullName"></span><br>
+                        <span style="font-weight: 400; font-size: 0.95rem;">Группа: <span id="prevGroup"></span></span>
+                    </div>
                     <p>Ваши предыдущие результаты:</p>
                     <div class="prev-score" id="prevScore">--%</div>
                     <p id="prevDetails">Правильных ответов: -- из 42</p>
@@ -507,6 +524,7 @@
                     <button class="submit-btn" id="submitBtn" onclick="submitTest()">Показать результат</button>
                 </div>
 
+                <!-- Исправлено: плашка поднята выше, уменьшены отступы -->
                 <div class="screenshot-notice">
                     <strong>Важно!</strong><br>
                     После отображения результатов сделайте скриншот экрана,<br>
@@ -620,6 +638,7 @@
         // Проверка предыдущих попыток по ФИО
         function checkPreviousAttempt() {
             const fullName = document.getElementById('fullName').value.trim();
+            const group = document.getElementById('group').value.trim();
             const prevResultDiv = document.getElementById('previousResult');
             
             if (!fullName) {
@@ -633,6 +652,11 @@
             if (savedData) {
                 const result = JSON.parse(savedData);
                 prevResultDiv.style.display = 'block';
+                
+                // Исправлено: отображаем ФИО и группу из сохранённых данных
+                document.getElementById('prevFullName').textContent = result.fullName || fullName;
+                document.getElementById('prevGroup').textContent = result.group || group || 'не указана';
+                
                 document.getElementById('prevScore').textContent = result.percentage + '%';
                 document.getElementById('prevDetails').textContent = `Правильных ответов: ${result.correctCount} из 42`;
                 
@@ -709,9 +733,11 @@
         }
 
         // Сохранение результатов в localStorage
-        function saveResults(fullName, results, answers) {
+        function saveResults(fullName, results, answers, group, institution) {
             const data = {
                 fullName: fullName,
+                group: group,
+                institution: institution,
                 timestamp: new Date().toISOString(),
                 correctCount: results.correctCount,
                 answeredCount: results.answeredCount,
@@ -810,6 +836,8 @@
         // Отправка теста
         function submitTest() {
             const fullName = document.getElementById('fullName').value.trim();
+            const group = document.getElementById('group').value.trim();
+            const institution = document.getElementById('institution').value.trim();
             
             if (!fullName) {
                 alert('Пожалуйста, введите ваше ФИО');
@@ -828,12 +856,12 @@
             const { correctCount, answeredCount, percentage } = calculateResults();
             const userAnswers = getUserAnswers();
             
-            // Сохраняем результаты
-            saveResults(fullName, { correctCount, answeredCount, percentage }, userAnswers);
+            // Сохраняем результаты (включая группу)
+            saveResults(fullName, { correctCount, answeredCount, percentage }, userAnswers, group, institution);
             
             // Отображаем модальное окно с результатами
-            const group = document.getElementById('group').value || 'не указано';
-            const institution = document.getElementById('institution').value || 'не указано';
+            const displayGroup = group || 'не указана';
+            const displayInstitution = institution || 'не указано';
             
             let grade = '';
             if (percentage >= 90) grade = 'Отлично';
@@ -843,8 +871,8 @@
             
             const resultHTML = `
                 <p><strong>${fullName}</strong></p>
-                <p>Группа: ${group}</p>
-                <p>Учреждение: ${institution}</p>
+                <p>Группа: ${displayGroup}</p>
+                <p>Учреждение: ${displayInstitution}</p>
                 <div class="score">${percentage}%</div>
                 <p>Правильных ответов: ${correctCount} из 42</p>
                 <p>Отвечено вопросов: ${answeredCount} из 42</p>
